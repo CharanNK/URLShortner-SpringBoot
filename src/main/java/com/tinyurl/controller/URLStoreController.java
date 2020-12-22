@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tinyurl.model.URLEntry;
 import com.tinyurl.model.URLStore;
 import com.tinyurl.service.URLStoreService;
 import com.tinyurl.util.TinyurlUtil;
@@ -19,7 +20,7 @@ public class URLStoreController {
 	private URLStoreService urlStoreService;
 	
 	@RequestMapping({"/getallurls"})
-	private List<URLStore> getAllURLs(){
+	private List<URLEntry> getAllURLs(){
 		return urlStoreService.getAllURLs();
 	}
 	
@@ -29,12 +30,7 @@ public class URLStoreController {
 		if(!TinyurlUtil.isValidURL(baseURL))
 			return "Invalid URL";
 		
-		URLStore urlstore = urlStoreService.getShortURL(baseURL);
-		
-		if(urlstore != null)
-			return urlstore.getShortUrl();
-		
-		return "No short URL";
+		return urlStoreService.getShortURL(baseURL);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/urlservice/getbaseurl")
@@ -43,19 +39,19 @@ public class URLStoreController {
 		if(!TinyurlUtil.isValidURL(shortURL))
 			return "Invalid URL";
 		
-		URLStore urlstore = urlStoreService.getBaseURL(shortURL);
-		
-		if(urlstore != null)
-			return urlstore.getOriginalUrl();
-		
-		return "No short URL";
+		return urlStoreService.getBaseURL(shortURL);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "urlservice/addnewurl")
-	private URLStore createShortURL(@RequestParam(value="baseurl",required = true) String baseURL) {
+	private URLEntry createShortURL(@RequestParam(value="baseurl",required = true) String baseURL) {
 		if(!TinyurlUtil.isValidURL(baseURL))
 			return null;
 		
 		return urlStoreService.createShortURL(baseURL);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "urlservice/removeurl")
+	private String removeURL(@RequestParam(value="baseurl",required=true) String baseURL) {
+		return urlStoreService.deleteURLEntry(baseURL);
 	}
 }

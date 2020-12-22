@@ -2,65 +2,47 @@ package com.tinyurl.service;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tinyurl.model.URLEntry;
 import com.tinyurl.model.URLStore;
 
 @Service
 public class URLStoreService {
-	private List<URLStore> urls = new ArrayList<>(
-			Arrays.asList(
-					new URLStore("https://google.com","https://tinyurldemo.com/abc345Q")
-					));
-	
-	public List<URLStore> getAllURLs(){
-		return urls;
-	}
-	
-	public URLStore getShortURL(String baseURL) {
-		return urls.stream().filter(t -> t.getOriginalUrl().equals(baseURL)).findFirst().get();
-	}
-	
-	public URLStore getBaseURL(String shortURL) {
-		return urls.stream().filter(t-> t.getShortUrl().equals(shortURL)).findFirst().get();
-	}
-	
-	public URLStore createShortURL(String baseURL) {
 
-		boolean hasShortURL = urls.stream().anyMatch(url -> url.getOriginalUrl().equals(baseURL));
-		
-		System.out.println("hasShortURL : "+hasShortURL);
-		
-		if(hasShortURL)
-			return null;
-		
-		URLStore newURLEntry = new URLStore(baseURL,generateShortURL(baseURL));
-		urls.add(newURLEntry);
-		
-		return newURLEntry;
+	@Autowired
+	private URLStore urlStore;
+
+	public List<URLEntry> getAllURLs() {
+		return urlStore.getAllUrls();
+	}
+
+	public String getShortURL(String baseURL) {
+		URLEntry urlEntry = urlStore.getShortURL(baseURL);
+		if (urlEntry != null)
+			return urlEntry.getShortUrl();
+		return "Short URL not created for this URL";
+	}
+
+	public String getBaseURL(String shortURL) {
+		URLEntry urlEntry = urlStore.getBaseURL(shortURL);
+		if (urlEntry != null)
+			return urlEntry.getBaseUrl();
+		return "This short URL does not exist in the system";
+	}
+
+	public URLEntry createShortURL(String baseURL) {
+		return urlStore.saveNewURL(baseURL);
 	}
 	
-	private static String generateShortURL(String baseURL) {
-		// chose a Character random from this String 
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                    + "0123456789"
-                                    + "abcdefghijklmnopqrstuvxyz"; 
-  
-        // create StringBuffer size of AlphaNumericString 
-        StringBuilder tinyURL = new StringBuilder(7); 
-  
-        for (int i = 0; i < 7; i++) { 
-            // generate a random number between 
-            // 0 to AlphaNumericString variable length 
-            int index 
-                = (int)(AlphaNumericString.length() * Math.random()); 
-  
-            // add Character one by one in end of sb 
-            tinyURL.append(AlphaNumericString.charAt(index)); 
-        } 
-        
-        System.out.println("\nBase URL: "+baseURL+"   tinyURL: https://tinyurldemo.com/"+tinyURL.toString());
-        
-		return "https://tinyurldemo.com/"+tinyURL.toString();
+	public String deleteURLEntry(String baseURL) {
+		boolean isDeleted = urlStore.deleteEntry(baseURL);
+		
+		if(isDeleted)
+			return "URL removed from the system.";
+		else
+			return "URL does not exist in the system";
 	}
+
 }
