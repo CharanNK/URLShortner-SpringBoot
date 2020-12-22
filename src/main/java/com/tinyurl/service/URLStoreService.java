@@ -34,7 +34,10 @@ public class URLStoreService {
 		if(hasShortURL)
 			return null;
 		
-		return new URLStore(baseURL,generateShortURL(baseURL));
+		URLStore newURLEntry = new URLStore(baseURL,generateShortURL(baseURL));
+		urls.add(newURLEntry);
+		
+		return newURLEntry;
 	}
 	
 	private static String generateShortURL(String baseURL) {

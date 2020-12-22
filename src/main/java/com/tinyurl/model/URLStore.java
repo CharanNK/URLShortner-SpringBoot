@@ -13,6 +13,7 @@ public class URLStore {
 		super();
 		this.originalUrl = originalUrl;
 		this.shortUrl = shortUrl;
+		this.createTime = new Date();
 	}
 
 	public String getOriginalUrl() {

@@ -50,4 +50,12 @@ public class URLStoreController {
 		
 		return "No short URL";
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "urlservice/addnewurl")
+	private URLStore createShortURL(@RequestParam(value="baseurl",required = true) String baseURL) {
+		if(!TinyurlUtil.isValidURL(baseURL))
+			return null;
+		
+		return urlStoreService.createShortURL(baseURL);
+	}
 }
