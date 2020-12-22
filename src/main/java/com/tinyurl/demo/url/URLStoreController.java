@@ -19,15 +19,28 @@ public class URLStoreController {
 		return urlStoreService.getAllURLs();
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT,value="/urlservice")
-	private String getShortURL(@RequestParam String baseURL) {
+	@RequestMapping(method=RequestMethod.POST,value="/urlservice/getshorturl")
+	private String getShortURL(@RequestParam("baseURL") String baseURL) {
 		
-		System.out.println("inside getshorurl");
+		System.out.println("inside getshorturl url received :"+baseURL);
 		
 		URLStore urlstore = urlStoreService.getShortURL(baseURL);
 		
-//		if(urlstore != null)
-//			return urlstore.getShortUrl();
+		if(urlstore != null)
+			return urlstore.getShortUrl();
+		
+		return "No short URL";
+	}
+	
+	@RequestMapping(method=RequestMethod.POST,value="/urlservice/getbaseurl")
+	private String getBaseURL(@RequestParam("shorturl") String shortURL) {
+		
+		System.out.println("inside getshorturl url received :"+shortURL);
+		
+		URLStore urlstore = urlStoreService.getBaseURL(shortURL);
+		
+		if(urlstore != null)
+			return urlstore.getOriginalUrl();
 		
 		return "No short URL";
 	}
