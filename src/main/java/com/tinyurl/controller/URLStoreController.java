@@ -1,4 +1,4 @@
-package com.tinyurl.demo.url;
+package com.tinyurl.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.tinyurl.model.URLStore;
+import com.tinyurl.service.URLStoreService;
+import com.tinyurl.util.TinyurlUtil;
 
 @RestController
 public class URLStoreController {
@@ -20,9 +24,10 @@ public class URLStoreController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/urlservice/getshorturl")
-	private String getShortURL(@RequestParam("baseURL") String baseURL) {
+	private String getShortURL(@RequestParam(value="baseurl",required=true) String baseURL) {
 		
-		System.out.println("inside getshorturl url received :"+baseURL);
+		if(!TinyurlUtil.isValidURL(baseURL))
+			return "Invalid URL";
 		
 		URLStore urlstore = urlStoreService.getShortURL(baseURL);
 		
@@ -33,9 +38,10 @@ public class URLStoreController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/urlservice/getbaseurl")
-	private String getBaseURL(@RequestParam("shorturl") String shortURL) {
+	private String getBaseURL(@RequestParam(value="shorturl",required = true) String shortURL) {
 		
-		System.out.println("inside getshorturl url received :"+shortURL);
+		if(!TinyurlUtil.isValidURL(shortURL))
+			return "Invalid URL";
 		
 		URLStore urlstore = urlStoreService.getBaseURL(shortURL);
 		

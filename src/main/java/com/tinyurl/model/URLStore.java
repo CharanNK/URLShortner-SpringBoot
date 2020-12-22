@@ -1,4 +1,4 @@
-package com.tinyurl.demo.url;
+package com.tinyurl.model;
 
 public class URLStore {
 	private String originalUrl;

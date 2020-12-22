@@ -1,8 +1,10 @@
-package com.tinyurl.demo.url;
+package com.tinyurl.service;
 
 import java.util.*;
 
 import org.springframework.stereotype.Service;
+
+import com.tinyurl.model.URLStore;
 
 @Service
 public class URLStoreService {

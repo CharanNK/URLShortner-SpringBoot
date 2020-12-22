@@ -1,4 +1,4 @@
-package com.tinyurl.demo;
+package com.tinyurl;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
