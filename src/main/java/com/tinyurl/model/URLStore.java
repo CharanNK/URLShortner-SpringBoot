@@ -1,8 +1,10 @@
 package com.tinyurl.model;
+import java.util.*;
 
 public class URLStore {
 	private String originalUrl;
 	private String shortUrl;
+	private Date createTime;
 	
 	public URLStore() {
 	}
