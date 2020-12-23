@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tinyurl.model.MongoURLStore;
 import com.tinyurl.model.URLEntry;
 import com.tinyurl.model.URLStore;
+import com.tinyurl.service.MongoURLStoreService;
 import com.tinyurl.service.URLStoreService;
 import com.tinyurl.util.TinyurlUtil;
 
 @RestController
+@RequestMapping("/mapservice")
 public class URLStoreController {
 	
 	@Autowired
