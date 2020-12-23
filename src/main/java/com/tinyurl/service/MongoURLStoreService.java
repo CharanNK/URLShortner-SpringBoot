@@ -78,4 +78,20 @@ public class MongoURLStoreService {
 			return false;
 		}
 	}
+	
+	public Date getCreateDate(String url) {
+		if(!TinyurlUtil.isValidURL(url))
+			return null;
+		
+		Criteria criteria = new Criteria();
+		criteria.orOperator(Criteria.where("baseUrl").is(url),Criteria.where("shortUrl").is(url));
+		Query query = new Query(criteria);
+		
+		MongoURLStore urlEntry = mongoTemplate.findOne(query, MongoURLStore.class);
+		
+		if(urlEntry!=null) {
+			return urlEntry.getCreateTime();
+		}else
+			return null;
+	}
 }

@@ -69,4 +69,14 @@ public class MongoURLStoreController {
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@RequestMapping(value = "/get-created-date", method = RequestMethod.GET)
+	public ResponseEntity<Date> findDateByUrl(@RequestParam(value="url",required = true) String url){
+		Date createdDate = mongoUrlStoreService.getCreateDate(url);
+		
+		if(createdDate==null)
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		else
+			return new ResponseEntity<Date>(createdDate,HttpStatus.OK);
+	}
 }

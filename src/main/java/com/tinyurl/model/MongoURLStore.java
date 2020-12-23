@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Document(collection = "urlstore")
 public class MongoURLStore {
@@ -22,7 +23,9 @@ public class MongoURLStore {
 	@Indexed(unique = true)
 	private String shortUrl;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private Date createTime;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private Date lastAccessTime;
 	private int numberOfAccess;
 	
